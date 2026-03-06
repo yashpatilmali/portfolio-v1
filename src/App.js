@@ -922,7 +922,7 @@ const About = () => {
     { icon: "🎓", label: "Education", value: "B.E. Computer Science" },
     { icon: "📍", label: "Location", value: "India" },
     { icon: "⚡", label: "Status", value: "Open to Opportunities" },
-    { icon: "🌐", label: "Languages", value: "English, Hindi" },
+    { icon: "🌐", label: "Languages", value: "English, Hindi, Marathi,Sanskrit" },
   ];
   return (
     <section id="about" style={{ padding: "clamp(4rem,8vw,7rem) 0", position: "relative", overflow: "hidden" }}>
