@@ -1585,15 +1585,7 @@ const Contact = () => {
 const Footer = () => (
   <footer style={{ padding: "2rem 0", borderTop: "1px solid rgba(255,255,255,0.04)", background: "rgba(255,255,255,0.01)" }}>
     <div className="footer-container" style={{ width: "min(1200px,100%)", marginInline: "auto", padding: "0 clamp(1.25rem,4vw,3rem)", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "1rem" }}>
-      <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: "0.78rem", color: "var(--muted2)" }}>© 2026 Yash Mali </div>
-      <div className="footer-links" style={{ display: "flex", gap: "1.5rem" }}>
-        {["About", "Skills", "Projects", "Contact"].map(l => (
-          <a key={l} href={`#${l.toLowerCase()}`} style={{ fontSize: "0.82rem", color: "var(--muted2)", transition: "color 0.2s", cursor: "pointer" }}
-            onMouseEnter={e => e.target.style.color = "#0ff4c6"}
-            onMouseLeave={e => e.target.style.color = "var(--muted2)"}
-          >{l}</a>
-        ))}
-      </div>
+      <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: "0.78rem", color: "var(--muted2)" }}>© Yash Patil Mali </div>
     </div>
   </footer>
 );
