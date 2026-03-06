@@ -25,6 +25,8 @@ const GlobalStyles = () => {
       html{
         scroll-behavior:smooth;
         overflow-x:hidden;
+        /* Keep anchor targets visible below fixed navbar */
+        scroll-padding-top:84px;
       }
       body{
         background:var(--bg);color:var(--text);
@@ -44,6 +46,7 @@ const GlobalStyles = () => {
       #root{
         overflow-x:hidden;
       }
+      section[id]{scroll-margin-top:84px}
 
       @media (prefers-reduced-motion: reduce){
         html{scroll-behavior:auto}
@@ -165,6 +168,13 @@ const GlobalStyles = () => {
       @media(max-width:768px){
         .hide-mobile{display:none!important}
         .hide-desktop{display:flex!important}
+        html{scroll-padding-top:112px}
+        section[id]{scroll-margin-top:112px}
+        .nav-main{height:auto!important;min-height:64px!important;padding:0.35rem 0!important}
+        .nav-shell{padding:0 0.9rem!important;row-gap:0.45rem!important}
+        .nav-logo{font-size:1.35rem!important}
+        .nav-links{width:100%!important;justify-content:center!important;gap:0.15rem!important}
+        .nav-link-item{padding:0.3rem 0.5rem!important;font-size:0.78rem!important}
         .stack-mobile{flex-direction:column!important;align-items:stretch!important}
         .grid-1-mobile{grid-template-columns:1fr!important;gap:3rem!important;}
         .hero-grid{display:flex!important;flex-direction:column-reverse!important;text-align:center;gap:2.5rem!important;padding-top:2.5rem!important;}
@@ -179,6 +189,14 @@ const GlobalStyles = () => {
         .footer-container{flex-direction:column!important;gap:1.25rem!important;text-align:center;}
         .footer-links{justify-content:center!important;width:100%!important;flex-wrap:wrap!important;}
         #hero{padding-top:90px!important;}
+      }
+
+      @media(max-width:480px){
+        html{scroll-padding-top:10px}
+        section[id]{scroll-margin-top:10px}
+        .nav-shell{padding:0 0.65rem!important}
+        .nav-logo{font-size:1.18rem!important}
+        .nav-link-item{padding:0.26rem 0.42rem!important;font-size:0.72rem!important}
       }
     `;
     document.head.appendChild(style);
@@ -579,7 +597,6 @@ const Modal = ({ data, onClose }) => {
 ═══════════════════════════════════════════════════════ */
 const Nav = () => {
   const [scrolled, setScrolled] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
   useEffect(() => {
     const s = () => setScrolled(window.scrollY > 40);
     window.addEventListener("scroll", s, { passive: true });
@@ -590,6 +607,7 @@ const Nav = () => {
   return (
     <>
       <nav
+  className="nav-main"
   style={{
     position: "fixed",
     top: 0,
@@ -609,6 +627,7 @@ const Nav = () => {
   }}
 >
   <div
+    className="nav-shell"
     style={{
       width: "min(1200px,100%)",
       marginInline: "auto",
@@ -623,6 +642,7 @@ const Nav = () => {
     
     {/* LOGO */}
     <a
+      className="nav-logo"
       href="#hero"
       style={{
         fontFamily: "'Bebas Neue',cursive",
@@ -650,6 +670,7 @@ const Nav = () => {
 
     {/* NAV LINKS */}
     <div
+      className="nav-links"
       style={{
         display: "flex",
         alignItems: "center",
@@ -660,6 +681,7 @@ const Nav = () => {
     >
       {links.map((l) => (
         <a
+          className="nav-link-item"
           key={l}
           href={`#${l.toLowerCase()}`}
           style={{
@@ -689,25 +711,6 @@ const Nav = () => {
     </div>
   </div>
 </nav>
-      {menuOpen && (
-        <div style={{
-          position: "fixed", top: scrolled ? 58 : 70, left: 0, right: 0, zIndex: 199,
-          background: "rgba(3,3,15,0.97)", backdropFilter: "blur(24px)",
-          padding: "1rem", display: "flex", flexDirection: "column", gap: "0.25rem",
-          borderBottom: "1px solid rgba(124,58,237,0.12)",
-          animation: "slideUp 0.25s ease",
-        }}>
-          {links.map(l => (
-            <a key={l} href={`#${l.toLowerCase()}`} onClick={() => setMenuOpen(false)}
-              style={{ padding: "0.85rem 1rem", borderRadius: 10, fontWeight: 500, color: "rgba(232,230,243,0.82)", cursor: "pointer", transition: "all 0.2s" }}
-              onMouseEnter={e => { e.target.style.background = "rgba(124,58,237,0.1)"; e.target.style.color = "#a78bfa"; }}
-              onMouseLeave={e => { e.target.style.background = "transparent"; e.target.style.color = "rgba(232,230,243,0.82)"; }}
-            >
-              {l}
-            </a>
-          ))}
-        </div>
-      )}
     </>
   );
 };
@@ -1606,6 +1609,12 @@ export default function App() {
   const [openingQuote, setOpeningQuote] = useState(OPENING_QUOTES[0]);
 
   useEffect(() => {
+    const sessionKey = "portfolio_opening_quote_shown";
+    if (sessionStorage.getItem(sessionKey) === "1") {
+      return;
+    }
+
+    sessionStorage.setItem(sessionKey, "1");
     let quoteIndex = Math.floor(Math.random() * OPENING_QUOTES.length);
 
     try {
@@ -1629,8 +1638,6 @@ export default function App() {
 
     setOpeningQuote(OPENING_QUOTES[quoteIndex]);
     setShowOpeningQuote(true);
-    const timer = setTimeout(() => setShowOpeningQuote(false), 5000);
-    return () => clearTimeout(timer);
   }, []);
 
   return (
@@ -1692,6 +1699,25 @@ export default function App() {
               letterSpacing: "0.01em",
               animation: "slideUp 0.8s cubic-bezier(0.16,1,0.3,1), neonPulse 2.8s ease-in-out infinite",
             }}>“{openingQuote}”</p>
+            <button
+              onClick={() => setShowOpeningQuote(false)}
+              style={{
+                marginTop: "1.25rem",
+                padding: "0.7rem 1.25rem",
+                borderRadius: 10,
+                border: "1px solid rgba(124,58,237,0.45)",
+                background: "linear-gradient(135deg,#7c3aed,#06b6d4)",
+                color: "#fff",
+                fontFamily: "'Outfit',sans-serif",
+                fontSize: "0.92rem",
+                fontWeight: 600,
+                letterSpacing: "0.03em",
+                cursor: "pointer",
+                boxShadow: "0 10px 24px rgba(0,0,0,0.35)",
+              }}
+            >
+              View Portfolio
+            </button>
           </div>
         </div>
       )}
