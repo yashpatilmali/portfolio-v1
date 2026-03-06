@@ -601,10 +601,38 @@ const Modal = ({ data, onClose }) => {
 ═══════════════════════════════════════════════════════ */
 const Nav = () => {
   const [scrolled, setScrolled] = useState(false);
+  const [activeSection, setActiveSection] = useState("about");
+  const links = ["About", "Skills", "Projects", "Experience", "Contact"];
+
   useEffect(() => {
     const s = () => setScrolled(window.scrollY > 40);
     window.addEventListener("scroll", s, { passive: true });
     return () => window.removeEventListener("scroll", s);
+  }, []);
+
+  useEffect(() => {
+    const ids = links.map((l) => l.toLowerCase());
+    const updateActiveSection = () => {
+      const nav = document.querySelector(".nav-main");
+      const navHeight = nav ? nav.getBoundingClientRect().height : 70;
+      const probe = window.scrollY + navHeight + 28;
+
+      let current = ids[0];
+      ids.forEach((id) => {
+        const el = document.getElementById(id);
+        if (el && el.offsetTop <= probe) current = id;
+      });
+
+      setActiveSection((prev) => (prev === current ? prev : current));
+    };
+
+    updateActiveSection();
+    window.addEventListener("scroll", updateActiveSection, { passive: true });
+    window.addEventListener("resize", updateActiveSection);
+    return () => {
+      window.removeEventListener("scroll", updateActiveSection);
+      window.removeEventListener("resize", updateActiveSection);
+    };
   }, []);
 
   const scrollToSection = (id) => (e) => {
@@ -625,10 +653,10 @@ const Nav = () => {
         : Math.min(sectionPaddingTop * 0.75, 52);
     const aboutExtraGap = id === "about" ? (isDesktop ? 62 : 16) : 0;
     const top = targetTop - navHeight + paddingCompensation - aboutExtraGap;
+    if (id !== "hero") setActiveSection(id);
     window.scrollTo({ top: Math.max(0, top), behavior: "smooth" });
   };
 
-  const links = ["About", "Skills", "Projects", "Experience", "Contact"];
   return (
     <>
       <nav
@@ -706,34 +734,48 @@ const Nav = () => {
       }}
     >
       {links.map((l) => (
+        (() => {
+          const id = l.toLowerCase();
+          const isActive = activeSection === id;
+          return (
         <a
           className="nav-link-item"
           key={l}
-          href={`#${l.toLowerCase()}`}
-          onClick={scrollToSection(l.toLowerCase())}
+          href={`#${id}`}
+          onClick={scrollToSection(id)}
           style={{
             padding: "0.35rem 0.7rem",
             borderRadius: 8,
             fontSize: "0.85rem",
             fontWeight: 500,
-            color: "rgba(226,224,240,0.55)",
+            color: isActive ? "#fff" : "rgba(226,224,240,0.55)",
+            background: isActive ? "rgba(124,58,237,0.16)" : "transparent",
+            boxShadow: isActive ? "inset 0 0 0 1px rgba(124,58,237,0.42)" : "none",
             transition: "all 0.25s",
             cursor: "pointer",
           }}
           onMouseEnter={(e) => {
-            e.target.style.color = "#fff";
-            e.target.style.background = "rgba(124,58,237,0.1)";
-            e.target.style.boxShadow =
+            e.currentTarget.style.color = "#fff";
+            e.currentTarget.style.background = "rgba(124,58,237,0.1)";
+            e.currentTarget.style.boxShadow =
               "inset 0 0 0 1px rgba(124,58,237,0.3)";
           }}
           onMouseLeave={(e) => {
-            e.target.style.color = "rgba(226,224,240,0.55)";
-            e.target.style.background = "transparent";
-            e.target.style.boxShadow = "none";
+            if (isActive) {
+              e.currentTarget.style.color = "#fff";
+              e.currentTarget.style.background = "rgba(124,58,237,0.16)";
+              e.currentTarget.style.boxShadow = "inset 0 0 0 1px rgba(124,58,237,0.42)";
+              return;
+            }
+            e.currentTarget.style.color = "rgba(226,224,240,0.55)";
+            e.currentTarget.style.background = "transparent";
+            e.currentTarget.style.boxShadow = "none";
           }}
         >
           {l}
         </a>
+          );
+        })()
       ))}
     </div>
   </div>
