@@ -599,10 +599,11 @@ const Modal = ({ data, onClose }) => {
 /* ═══════════════════════════════════════════════════════
    NAV
 ═══════════════════════════════════════════════════════ */
+const NAV_LINKS = ["About", "Skills", "Projects", "Experience", "Contact"];
+
 const Nav = () => {
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState("about");
-  const links = ["About", "Skills", "Projects", "Experience", "Contact"];
 
   useEffect(() => {
     const s = () => setScrolled(window.scrollY > 40);
@@ -611,7 +612,7 @@ const Nav = () => {
   }, []);
 
   useEffect(() => {
-    const ids = links.map((l) => l.toLowerCase());
+    const ids = NAV_LINKS.map((l) => l.toLowerCase());
     const updateActiveSection = () => {
       const nav = document.querySelector(".nav-main");
       const navHeight = nav ? nav.getBoundingClientRect().height : 70;
@@ -751,7 +752,7 @@ const Nav = () => {
         justifyContent: "center",
       }}
     >
-      {links.map((l) => (
+      {NAV_LINKS.map((l) => (
         (() => {
           const id = l.toLowerCase();
           const isActive = activeSection === id;
