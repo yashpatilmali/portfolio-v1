@@ -607,6 +607,27 @@ const Nav = () => {
     return () => window.removeEventListener("scroll", s);
   }, []);
 
+  const scrollToSection = (id) => (e) => {
+    e.preventDefault();
+    const target = document.getElementById(id);
+    if (!target) return;
+
+    const targetTop = target.getBoundingClientRect().top + window.scrollY;
+    const expandedNavHeight = 70;
+    const compactNavHeight = 58;
+    const isDesktop = window.matchMedia("(min-width: 769px)").matches;
+    const navHeight = id === "hero" || targetTop <= 40 ? expandedNavHeight : compactNavHeight;
+    const sectionPaddingTop = parseFloat(window.getComputedStyle(target).paddingTop || "0") || 0;
+    const paddingCompensation = id === "hero"
+      ? 0
+      : isDesktop
+        ? Math.min(sectionPaddingTop * 1, 100)
+        : Math.min(sectionPaddingTop * 0.75, 52);
+    const aboutExtraGap = id === "about" ? (isDesktop ? 62 : 16) : 0;
+    const top = targetTop - navHeight + paddingCompensation - aboutExtraGap;
+    window.scrollTo({ top: Math.max(0, top), behavior: "smooth" });
+  };
+
   const links = ["About", "Skills", "Projects", "Experience", "Contact"];
   return (
     <>
@@ -648,6 +669,7 @@ const Nav = () => {
     <a
       className="nav-logo"
       href="#hero"
+      onClick={scrollToSection("hero")}
       style={{
         fontFamily: "'Bebas Neue',cursive",
         fontSize: "1.7rem",
@@ -688,6 +710,7 @@ const Nav = () => {
           className="nav-link-item"
           key={l}
           href={`#${l.toLowerCase()}`}
+          onClick={scrollToSection(l.toLowerCase())}
           style={{
             padding: "0.35rem 0.7rem",
             borderRadius: 8,
