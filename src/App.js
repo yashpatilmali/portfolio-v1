@@ -1413,11 +1413,18 @@ const Contact = () => {
       return;
     }
 
-    const serviceId = process.env.REACT_APP_EMAILJS_SERVICE_ID;
-    const templateId = process.env.REACT_APP_EMAILJS_TEMPLATE_ID;
-    const publicKey = process.env.REACT_APP_EMAILJS_PUBLIC_KEY;
+    const serviceId =
+      process.env.REACT_APP_EMAILJS_SERVICE_ID ||
+      "service_qtyoggk";
+    const templateId =
+      process.env.REACT_APP_EMAILJS_TEMPLATE_ID ||
+      "template_hxqd22d";
+    const publicKey =
+      process.env.REACT_APP_EMAILJS_PUBLIC_KEY ||
+      process.env.REACT_APP_EMAILJS_USER_ID ||
+      "PAnjpkFSXnDw__3lT";
     if (!serviceId || !templateId || !publicKey) {
-      setSubmitError("Contact form email is not configured yet.");
+      setSubmitError("Contact form email is not configured. Check EmailJS IDs and restart dev server.");
       return;
     }
 
