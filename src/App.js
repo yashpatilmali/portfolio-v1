@@ -615,22 +615,40 @@ const Nav = () => {
     const updateActiveSection = () => {
       const nav = document.querySelector(".nav-main");
       const navHeight = nav ? nav.getBoundingClientRect().height : 70;
-      const probe = window.scrollY + navHeight + 28;
+      const marker = navHeight + Math.max(36, window.innerHeight * 0.2);
 
       let current = ids[0];
       ids.forEach((id) => {
         const el = document.getElementById(id);
-        if (el && el.offsetTop <= probe) current = id;
+        if (!el) return;
+
+        const rect = el.getBoundingClientRect();
+        const isAtMarker = rect.top <= marker && rect.bottom >= marker;
+        if (isAtMarker) current = id;
       });
+
+      if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4) {
+        current = ids[ids.length - 1];
+      }
 
       setActiveSection((prev) => (prev === current ? prev : current));
     };
 
+    let ticking = false;
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        updateActiveSection();
+        ticking = false;
+      });
+    };
+
     updateActiveSection();
-    window.addEventListener("scroll", updateActiveSection, { passive: true });
+    window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", updateActiveSection);
     return () => {
-      window.removeEventListener("scroll", updateActiveSection);
+      window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", updateActiveSection);
     };
   }, []);
