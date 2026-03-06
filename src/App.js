@@ -584,7 +584,7 @@ const Modal = ({ data, onClose }) => {
           </div>
         ))}
         <div style={{ display: "flex", gap: "0.75rem", marginTop: "1.5rem", flexWrap: "wrap" }}>
-          <MagButton primary href={data.demo}>↗ Live Demo</MagButton>
+          {data.demo && <MagButton primary href={data.demo}>↗ Live Demo</MagButton>}
           <MagButton href={data.github}>⌥ Source Code</MagButton>
         </div>
       </div>
