@@ -278,15 +278,19 @@ const MagButton = ({ children, style = {}, onClick, href, primary }) => {
   const [pos, setPos] = useState({ x: 0, y: 0 });
   const [hovered, setHovered] = useState(false);
   const [ripples, setRipples] = useState([]);
+  const canUseMagnet =
+    typeof window !== "undefined" &&
+    window.matchMedia("(hover: hover) and (pointer: fine)").matches;
 
   const onMouseMove = (e) => {
+    if (!canUseMagnet) return;
     const rect = ref.current.getBoundingClientRect();
     const x = e.clientX - rect.left - rect.width / 2;
     const y = e.clientY - rect.top - rect.height / 2;
     setPos({ x: x * 0.35, y: y * 0.35 });
   };
   const onMouseLeave = () => { setPos({ x: 0, y: 0 }); setHovered(false); };
-  const onMouseEnter = () => setHovered(true);
+  const onMouseEnter = () => setHovered(canUseMagnet);
   const handleClick = (e) => {
     const rect = ref.current.getBoundingClientRect();
     const id = Date.now();
@@ -299,7 +303,7 @@ const MagButton = ({ children, style = {}, onClick, href, primary }) => {
     position: "relative", overflow: "hidden", display: "inline-flex", alignItems: "center", gap: "0.5rem",
     padding: "0.75rem 1.75rem", borderRadius: "10px", fontFamily: "'Outfit',sans-serif",
     fontSize: "0.95rem", fontWeight: 600, letterSpacing: "0.03em", cursor: "pointer",
-    transform: `translate(${pos.x}px,${pos.y}px)`,
+    transform: canUseMagnet ? `translate(${pos.x}px,${pos.y}px)` : "none",
     transition: `transform 0.25s cubic-bezier(0.34,1.56,0.64,1),box-shadow 0.35s ease`,
     ...(primary ? {
       background: hovered
