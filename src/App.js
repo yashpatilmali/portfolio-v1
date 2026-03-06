@@ -1136,7 +1136,7 @@ const projects = [
     desc: "Created a responsive personal portfolio using HTML and CSS to showcase projects and technical skills with a clean and professional design. Implemented structured layout, custom styling, and responsive design principles to ensure compatibility across different devices and screen resolutions effectively.",
     chips: ["HTML", "CSS"],
     sections: [
-      { heading: "Description", content: "The Portfolio Website is a responsive and interactive web application developed using HTML, CSS, and JavaScript. This website is designed to provide information about the Computer Science & Engineering Students Association (CSESA), including events, announcements, members, gallery, and contact details." },
+      { heading: "Description", content: "Created a responsive personal portfolio using HTML and CSS to showcase projects and technical skills with a clean and professional design. Implemented structured layout, custom styling, and responsive design principles to ensure compatibility across different devices and screen resolutions effectively." },
       // { heading: "Key Metrics", content: "500+ req/s sustained in load testing · Cache hit rate ~78% · Avg response: 45ms cached vs 320ms cold." },
     ],
   },
@@ -1241,7 +1241,7 @@ const Experience = () => {
   ];
   const edu = [
     { degree: "B.E. — Computer Science", school: "Shri Sant Gajanan Maharaj College of Engineering, Shegaon", dates: "2023–2027 · CGPA 7.8/10" },
-    { degree: "Higher Secondary — PCM", school: "Shri Samartha Junior College, Amravati", dates: "2021–2023 · 94.58%" },
+    { degree: "Higher Secondary — PCM", school: "Shri Samartha Junior College, Akola", dates: "2021–2023 · 94.58%" },
   ];
   return (
     <section id="experience" style={{ padding: "clamp(4rem,8vw,7rem) 0", background: "rgba(124,58,237,0.015)", borderTop: "1px solid rgba(124,58,237,0.08)" }}>
@@ -1321,7 +1321,7 @@ const Experience = () => {
                 WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
                 textTransform: "uppercase", marginBottom: "1rem",
               }}>— Certifications, Achievements & Workshops</h3>
-              {["\ud83c\udfc6 Google AI Essentials and Google Cybersecurity Certificate", "\ud83c\udfaf Coursera - Gen AI Study Jams (Google): several tracks finished", "\u26a1 Workshop: ISTE SSGMCE (hands-on custom GPTs): Mastering AI with custom GPTs", "\ud83c\udf93 Participation in several guest lectures: IIT Bombay E-Summit", "\ud83d\udcc8 Data Structures and Algorithms using Java \u2013 NPTEL", "\ud83e\udd47 Winner of Internal Hackathon 25 - 26", "\ud83d\udcbb Participated in Hackathons: Sipna College of Engineering, PR Pote College of Engineering"].map(c => (
+              {["\ud83c\udfc6 Google AI Essentials and Google Cybersecurity Certificate", "\ud83c\udfaf Coursera - Gen AI Study Jams (Google): several tracks finished", "\u26a1 Participated in several startup competitions on institute level", "\ud83c\udf93 Participation in several guest lectures: IIT Bombay E-Summit", "\ud83d\udcc8 Data Structures and Algorithms using Java \u2013 NPTEL", "\ud83e\udd47 Winner of Internal Hackathon 25 - 26", "\ud83d\udcbb Participated in Hackathons: Sipna College of Engineering, PR Pote College of Engineering"].map(c => (
                 <div key={c} style={{
                   padding: "0.8rem 1rem", borderRadius: 10, marginBottom: "0.5rem",
                   background: "rgba(124,58,237,0.04)", border: "1px solid rgba(124,58,237,0.12)",
